@@ -1,0 +1,170 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" media="screen">
+
+	<title>Getting Started with Chart JS with www.chartjs3.com</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+		}
+
+		.chartCard {
+			width: 100vw;
+			height: calc(100vh - 40px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.chartBox {
+			width: 450px;
+			margin: 100px;
+			padding: 20px;
+			border-radius: 20px;
+			border: solid 3px rgba(255, 26, 104, 1);
+			background: white;
+		}
+	</style>
+</head>
+
+<body class="pace-done lout_stats30">
+	<main id="content" role="main" class="wyniki wyniki_all">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 page_log_in mt-0">
+						<h2 class="h1" style="text-align: center;">Link Analytics</h2>
+					</div>
+
+					<div class="url_options url_stats_o" id="1">
+						<p class="data_link">{{ row.created_date }}</p>
+						<p class="url_link">
+							{{ row.long_url }}
+						</p>
+						<p id="link" class="link_element">
+							<a href="/redirect/{{ row.custom_name }}" class="short_url_l" target="blank">
+								{{ row.custom_name }}</a>
+						</p>
+						<div class="stats_total btn-cutt click_stats btn_norm">
+							<div>Total clicks<strong class="allClicks">{{ row.visit_count }}</strong></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="chartCard">
+				<div class="chartBox">
+					<canvas id="myChartBar"></canvas>
+				</div>
+				<div class="chartBox">
+					<canvas id="myChartDoughnut"></canvas>
+				</div>
+			</div>
+			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+			<script>
+				// setup Bar Chart
+				const dataBar = {
+					labels: [{% for data in country_data %} '{{ data.country_name }}', {% endfor %}],
+					datasets: [{
+						label: 'Bar',
+						data: [{% for data in country_data %} '{{ data.country_count }}', {% endfor %}],
+						backgroundColor: [
+							'rgba(255, 26, 104, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 206, 86, 1)',
+							'rgba(75, 192, 192, 1)',
+							'rgba(153, 102, 255, 1)',
+							'rgba(255, 159, 64, 1)',
+							'rgba(0, 0, 0, 1)'
+						],
+						borderColor: [
+							'rgba(255, 26, 104, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 206, 86, 1)',
+							'rgba(75, 192, 192, 1)',
+							'rgba(153, 102, 255, 1)',
+							'rgba(255, 159, 64, 1)',
+							'rgba(0, 0, 0, 1)'
+						],
+						borderWidth: 1
+					}]
+				};
+				// config 
+				const configBar = {
+					type: 'bar',
+					data: dataBar,
+					options: {
+						aspectRatio: 1,
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				};
+				// render init block
+				const myChartBar = new Chart(
+					document.getElementById('myChartBar'),
+					configBar
+				);
+
+				// setup Doughnut Chart
+				const dataDoughnut = {
+					labels: [{% for data in device_data %} '{{ data.device_name }}', {% endfor %}],
+					datasets: [{
+						label: 'Doughnut',
+						data: [{% for data in device_data %} '{{ data.device_count }}', {% endfor %}],
+						backgroundColor: [
+							'rgba(255, 26, 104, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 206, 86, 1)',
+							'rgba(75, 192, 192, 1)',
+							'rgba(153, 102, 255, 1)',
+							'rgba(255, 159, 64, 1)',
+							'rgba(0, 0, 0, 1)'
+						],
+						borderColor: [
+							'rgba(255, 26, 104, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 206, 86, 1)',
+							'rgba(75, 192, 192, 1)',
+							'rgba(153, 102, 255, 1)',
+							'rgba(255, 159, 64, 1)',
+							'rgba(0, 0, 0, 1)'
+						],
+						borderWidth: 1
+					}]
+				};
+				// config 
+				const configDoughnut = {
+					type: 'doughnut',
+					data: dataDoughnut,
+					options: {
+					}
+				};
+				// render init block
+				const myChartDoughnut = new Chart(
+					document.getElementById('myChartDoughnut'),
+					configDoughnut
+				);
+			</script>
+			</div>
+	</main>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+</body>
+</html>
